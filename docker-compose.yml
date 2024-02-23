@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  database:
+    container_name: ${DB_CONTAINER_NAME}
+    image: mariadb:11.3.2-jammy
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - db:/var/lib/mysql
+
+  backend:
+    container_name: ${BACKEND_CONTAINER_NAME}
+    depends_on:
+      - database
+    build:
+      context: ${BACKEND_CONTAINER_NAME}
+      dockerfile: Dockerfile.dev
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+      - '9229:9229'
+    volumes:
+      - ./${BACKEND_CONTAINER_NAME}:/app
+      - backend_node_modules:/app/node_modules
+    env_file: ./.env
+    restart: always
+
+  frontend:
+    container_name: ${FRONTEND_CONTAINER_NAME}
+    depends_on:
+      - ${BACKEND_CONTAINER_NAME}
+    build:
+      context: ${FRONTEND_CONTAINER_NAME}
+      dockerfile: Dockerfile.dev
+    ports:
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+    volumes:
+      - ./${FRONTEND_CONTAINER_NAME}:/app
+      - frontend_node_modules:/app/node_modules
+    env_file: ./.env
+    restart: always
+    environment:
+      - REACT_APP_BACKEND_PORT=${BACKEND_PORT}
+
+volumes:
+  db:
+  backend_node_modules:
+  frontend_node_modules:

@@ -1,0 +1,63 @@
+version: '3'
+services:
+  database:
+    container_name: ${DB_CONTAINER_NAME}
+    image: mariadb:11.3.2-jammy
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - db:/var/lib/mysql
+
+    periodic-backup:
+      container_name: ${BACKUP_CONTAINER_NAME}
+      depends_on:
+        - database
+      build: ./periodic-backup
+      environment:
+        MARIADB_CONTAINER_NAME: database
+        BACKUP_FOLDER_PATH: ${BACKUP_FOLDER_PATH}
+        MARIADB_DATABASE: ${DB_DATABASE}
+        MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /opt/mysql/backup:/opt/mysql/backup
+      command: crond -f -d 8
+      restart: always
+
+    backend:
+      container_name: ${BACKEND_CONTAINER_NAME}
+      depends_on:
+        - database
+      restart: always
+      build:
+        context: backend
+        dockerfile: Dockerfile
+      ports:
+        - ${BACKEND_PORT}:${BACKEND_PORT}
+      env_file: ./.env
+
+    frontend:
+      container_name: ${FRONTEND_CONTAINER_NAME}
+      depends_on:
+        - backend
+      restart: unless-stopped
+      build:
+        context: frontend
+        dockerfile: Dockerfile
+        args:
+          - DOMAIN=${DOMAIN}
+          - BACKEND_PORT=${BACKEND_PORT}
+      volumes:
+        - ./frontend/config/nginx:/etc/nginx/conf.d
+        - ./frontend/config/certbot/conf:/etc/letsencrypt
+        - ./frontend/config/certbot/www:/var/www/certbot
+      ports:
+        - "80:80"
+        - "443:443"
+      command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
