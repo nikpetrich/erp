@@ -7,10 +7,9 @@ on:
     branches: ["main", "dev"]
 
 env:
-  REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: ${{ github.actor }}/erp/backend:latest
-  FRONTEND_IMAGE_NAME: ${{ github.actor }}/erp/frontend:latest
-  BACKUP_IMAGE_NAME: ${{ github.actor }}/erp/backup:latest
+  BACKEND_IMAGE_NAME: ghcr.io/erp/backend:latest
+  FRONTEND_IMAGE_NAME: ghcr.io/erp/frontend:latest
+  BACKUP_IMAGE_NAME: ghcr.io/erp/backup:latest
 
 jobs:
   publish:
@@ -26,9 +25,10 @@ jobs:
       - name: Build and publish
         run: |
           docker compose -f docker-compose-prod-build.yml build
-          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
-          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
-          docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
+          docker images
+          docker push ${{ env.BACKEND_IMAGE_NAME }}
+          docker push ${{ env.FRONTEND_IMAGE_NAME }}
+          docker push ${{ env.BACKUP_IMAGE_NAME }}
 
   # deploy:
   #   needs: publish
