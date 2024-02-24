@@ -7,13 +7,13 @@ on:
     branches: ["main", "dev"]
 
 env:
-  BACKEND_IMAGE_NAME: ghcr.io/erp/backend:latest
-  FRONTEND_IMAGE_NAME: ghcr.io/erp/frontend:latest
-  BACKUP_IMAGE_NAME: ghcr.io/erp/backup:latest
+  BACKEND_IMAGE_NAME: erp/backend:latest
+  FRONTEND_IMAGE_NAME: erp/frontend:latest
+  BACKUP_IMAGE_NAME: erp/backup:latest
 
 jobs:
   publish:
-    name: publish image
+    name: publish images
     runs-on: ubuntu-latest
 
     steps:
