@@ -5,7 +5,7 @@ services:
     build:
       context: ${BACKUP_CONTAINER_NAME}
       dockerfile: Dockerfile.prod
-    image: ${PROJECT_NAME}/${BACKUP_CONTAINER_NAME}:latest
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${BACKUP_CONTAINER_NAME}:latest
     environment:
       MARIADB_CONTAINER_NAME: database
       BACKUP_FOLDER_PATH: ${BACKUP_FOLDER_PATH}
@@ -23,7 +23,7 @@ services:
     build:
       context: ${BACKEND_CONTAINER_NAME}
       dockerfile: Dockerfile.prod
-    image: ${PROJECT_NAME}/${BACKEND_CONTAINER_NAME}:latest
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${BACKEND_CONTAINER_NAME}:latest
     ports:
       - ${BACKEND_PORT}:${BACKEND_PORT}
     env_file: ./.env
@@ -36,6 +36,6 @@ services:
       dockerfile: Dockerfile.prod
       args:
         - BACKEND_PORT=${BACKEND_PORT}
-    image: ${PROJECT_NAME}/${FRONTEND_CONTAINER_NAME}:latest
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${FRONTEND_CONTAINER_NAME}:latest
     ports:
       - ${FRONTEND_PORT}:80

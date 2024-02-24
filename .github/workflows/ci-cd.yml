@@ -8,9 +8,9 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: ${{ github.actor }}/backend:latest
-  FRONTEND_IMAGE_NAME: ${{ github.actor }}/frontend:latest
-  BACKUP_IMAGE_NAME: ${{ github.actor }}/backup:latest
+  BACKEND_IMAGE_NAME: ${{ github.actor }}/erp/backend:latest
+  FRONTEND_IMAGE_NAME: ${{ github.actor }}/erp/frontend:latest
+  BACKUP_IMAGE_NAME: ${{ github.actor }}/erp/backup:latest
 
 jobs:
   publish:
