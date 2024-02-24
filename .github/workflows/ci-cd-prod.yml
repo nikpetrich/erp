@@ -1,0 +1,63 @@
+name: Docker ci/cd prod
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  REGISTRY: ghcr.io
+  BACKEND_IMAGE_NAME: ${{ github.actor }}/erp/backend:prod
+  FRONTEND_IMAGE_NAME: ${{ github.actor }}/erp/frontend:prod
+  BACKUP_IMAGE_NAME: ${{ github.actor }}/erp/backup:prod
+
+jobs:
+  publish:
+    name: publish images
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login
+        run: |
+          echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and publish
+        run: |
+          export TAG=prod
+          docker compose -f docker-compose-build.yml build
+          docker images
+          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
+          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
+          docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
+        env:
+          TAG: prod
+
+  deploy:
+    needs: publish
+    name: deploy image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: install ssh keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST_PROD }} > ~/.ssh/known_hosts
+
+      - name: connect and pull
+        run: |
+          export TAG=prod
+          ssh ${{ secrets.SSH_USER_PROD }}@${{ secrets.SSH_HOST_PROD }} "\
+          [ -d ${{ github.repository }} ] || mkdir -p ${{ github.repository }} && \
+          cd ${{ github.repository }} && \
+          curl -O -L https://raw.githubusercontent.com/${{ github.repository }}/main/docker-compose-deploy.yml && \
+          docker compose -f docker-compose-deploy.yml pull && \
+          docker compose -f docker-compose-deploy.yml up -d && \
+          exit"
+        env:
+          TAG: prod
+
+      - name: cleanup
+        run: rm -rf ~/.ssh
