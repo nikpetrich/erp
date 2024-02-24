@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  database:
+    container_name: ${DB_CONTAINER_NAME}
+    image: mariadb:11.3.2-jammy
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${PROJECT_NAME}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - db:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+
+  backup:
+    container_name: ${BACKUP_CONTAINER_NAME}
+    depends_on:
+      - ${DB_CONTAINER_NAME}
+    image: ghcr.io/${PROJECT_NAME}${BACKUP_CONTAINER_NAME}:latest
+    restart: always
+
+  backend:
+    container_name: ${BACKEND_CONTAINER_NAME}
+    depends_on:
+      - ${DB_CONTAINER_NAME}
+    restart: always
+    image: ghcr.io/${PROJECT_NAME}${BACKEND_CONTAINER_NAME}:latest
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+
+  frontend:
+    container_name: ${FRONTEND_CONTAINER_NAME}
+    depends_on:
+      - ${BACKEND_CONTAINER_NAME}
+    restart: unless-stopped
+    image: ghcr.io/${PROJECT_NAME}${FRONTEND_CONTAINER_NAME}:latest
+    ports:
+      - "80:80"
+
+volumes:
+  db:

@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install curl gnupg -y \
 # Install app dependencies
 COPY ./package.json .
 COPY ./package-lock.json .
-RUN npm install
+RUN npm i
 
 # Copy in the source
 COPY . .
