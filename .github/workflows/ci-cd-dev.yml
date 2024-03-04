@@ -30,6 +30,7 @@ jobs:
       - name: Build and publish
         run: |
           export TAG=${{ env.TAG }}
+          echo $TAG
           docker compose -f docker-compose-build.yml build
           docker images
           docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ env.TAG }}
