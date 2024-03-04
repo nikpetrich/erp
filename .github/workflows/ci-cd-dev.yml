@@ -50,7 +50,7 @@ jobs:
         run: |
           export TAG=dev
           ssh ${{ secrets.SSH_USER_DEV }}@${{ secrets.SSH_HOST_DEV }} "\
-          [ -d ${{ github.repository }} ] || git clone https://github.com/${{ github.repository }}.git && \
+          [ -d ${{ github.repository }} ] || git clone git@github.com:${{ github.repository }}.git && \
           cd ${{ github.repository }} && \
           git pull origin dev && \
           docker compose -f docker-compose-deploy.yml pull && \
