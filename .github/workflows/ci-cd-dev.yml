@@ -13,29 +13,29 @@ env:
   BACKUP_IMAGE_NAME: ${{ github.actor }}/erp/backup:dev
 
 jobs:
-  publish:
-    name: publish images
-    runs-on: ubuntu-latest
+  # publish:
+  # name: publish images
+  # runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Login
-        run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+  # steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Login
+  #     run: |
+  #       echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build and publish
-        run: |
-          export TAG=dev
-          docker compose -f docker-compose-build.yml build
-          docker images
-          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
-          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
-          docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
-        env:
-          TAG: dev
+  #   - name: Build and publish
+  #     run: |
+  #       export TAG=dev
+  #       docker compose -f docker-compose-build.yml build
+  #       docker images
+  #       docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
+  #       docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
+  #       docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
+  #     env:
+  #       TAG: dev
 
   deploy:
-    needs: publish
+    # needs: publish
     name: deploy images
     runs-on: ubuntu-latest
 
@@ -46,14 +46,13 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST_DEV }} > ~/.ssh/known_hosts
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: connect and pull
         run: |
           export TAG=dev
           ssh ${{ secrets.SSH_USER_DEV }}@${{ secrets.SSH_HOST_DEV }} "\
-          ls -la && \
+          [ -d ${{ github.repository }} ] || git clone https://github.com/${{ github.repository }}.git && \
+          cd ${{ github.repository }} && \
+          git pull origin dev && \
           docker compose -f docker-compose-deploy.yml pull && \
           docker compose -f docker-compose-deploy.yml up -d && \
           exit"
