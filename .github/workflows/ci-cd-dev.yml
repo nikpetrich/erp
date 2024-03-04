@@ -53,6 +53,7 @@ jobs:
         run: |
           export TAG=dev
           ssh ${{ secrets.SSH_USER_DEV }}@${{ secrets.SSH_HOST_DEV }} "\
+          ls -la && \
           docker compose -f docker-compose-deploy.yml pull && \
           docker compose -f docker-compose-deploy.yml up -d && \
           exit"
