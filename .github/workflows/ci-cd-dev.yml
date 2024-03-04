@@ -52,8 +52,8 @@ jobs:
 
       - name: connect and pull
         run: |
-          export TAG=${{ env.MODE }}
           ssh ${{ secrets.SSH_USER_DEV }}@${{ secrets.SSH_HOST_DEV }} "\
+          export TAG=${{ env.MODE }}
           [ -d ${{ env.REPONAME }} ] || git clone git@github.com:${{ github.repository }}.git && \
           cd ${{ env.REPONAME }} && \
           git checkout dev && git pull && \
