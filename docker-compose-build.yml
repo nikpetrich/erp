@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  backup:
+    container_name: ${BACKUP_CONTAINER_NAME}
+    build:
+      context: ${BACKUP_CONTAINER_NAME}
+      dockerfile: Dockerfile.prod
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${BACKUP_CONTAINER_NAME}:${TAG}
+    environment:
+      MARIADB_CONTAINER_NAME: database
+      BACKUP_FOLDER_PATH: ${BACKUP_FOLDER_PATH}
+      MARIADB_DATABASE: ${PROJECT_NAME}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /opt/mysql/backup:/opt/mysql/backup
+    command: crond -f -d 8
+
+  backend:
+    container_name: ${BACKEND_CONTAINER_NAME}
+    build:
+      context: ${BACKEND_CONTAINER_NAME}
+      dockerfile: Dockerfile.prod
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${BACKEND_CONTAINER_NAME}:${TAG}
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    env_file: ./.env
+
+  frontend:
+    container_name: ${FRONTEND_CONTAINER_NAME}
+    build:
+      context: ${FRONTEND_CONTAINER_NAME}
+      dockerfile: Dockerfile.prod
+      args:
+        - BACKEND_PORT=${BACKEND_PORT}
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${FRONTEND_CONTAINER_NAME}:${TAG}
+    ports:
+      - ${FRONTEND_PORT}:80
