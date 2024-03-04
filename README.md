@@ -18,4 +18,4 @@ The ERP (Enterprise Resource Planning) system is a comprehensive software soluti
 
 ## License
 
-This project is licensed under the [CC BY-NC-ND 4.0](LICENSE).
+This project is licensed under the [CC BY-NC-ND 4.0](LICENSE.md).
