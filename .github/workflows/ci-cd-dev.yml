@@ -1,16 +1,16 @@
-name: Docker ci/cd production
+name: Docker ci/cd development
 
 on:
   push:
-    branches: ["main"]
+    branches: ["dev"]
   pull_request:
-    branches: ["main"]
+    branches: ["dev"]
 
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: ${{ github.actor }}/erp/backend:prod
-  FRONTEND_IMAGE_NAME: ${{ github.actor }}/erp/frontend:prod
-  BACKUP_IMAGE_NAME: ${{ github.actor }}/erp/backup:prod
+  BACKEND_IMAGE_NAME: ${{ github.actor }}/erp/backend:dev
+  FRONTEND_IMAGE_NAME: ${{ github.actor }}/erp/frontend:dev
+  BACKUP_IMAGE_NAME: ${{ github.actor }}/erp/backup:dev
 
 jobs:
   publish:
@@ -25,14 +25,14 @@ jobs:
 
       - name: Build and publish
         run: |
-          export TAG=prod
+          export TAG=dev
           docker compose -f docker-compose-build.yml build
           docker images
           docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
           docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
           docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
         env:
-          TAG: prod
+          TAG: dev
 
   deploy:
     needs: publish
@@ -43,13 +43,13 @@ jobs:
       - name: install ssh keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST_PROD }} > ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST_DEV }} > ~/.ssh/known_hosts
 
       - name: connect and pull
         run: |
-          export TAG=prod
-          ssh ${{ secrets.SSH_USER_PROD }}@${{ secrets.SSH_HOST_PROD }} "\
+          export TAG=dev
+          ssh ${{ secrets.SSH_USER_DEV }}@${{ secrets.SSH_HOST_DEV }} "\
           [ -d ${{ github.repository }} ] || mkdir -p ${{ github.repository }} && \
           cd ${{ github.repository }} && \
           curl -O -L https://raw.githubusercontent.com/${{ github.repository }}/main/docker-compose-deploy.yml && \
@@ -57,7 +57,7 @@ jobs:
           docker compose -f docker-compose-deploy.yml up -d && \
           exit"
         env:
-          TAG: prod
+          TAG: dev
 
       - name: cleanup
         run: rm -rf ~/.ssh
