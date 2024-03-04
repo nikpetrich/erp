@@ -17,30 +17,29 @@ env:
   BACKUP_IMAGE_NAME: ${{ github.repository }}/backup
 
 jobs:
-  publish:
-    name: publish images
-    runs-on: ubuntu-latest
+  # publish:
+  #   name: publish images
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Login
-        run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Login
+  #       run: |
+  #         echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build and publish
-        run: |
-          export TAG=${{ env.TAG }}
-          echo $TAG
-          docker compose -f docker-compose-build.yml build
-          docker images
-          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ env.TAG }}
-          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.TAG }}
-          docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}:${{ env.TAG }}
-        env:
-          TAG: ${{ env.TAG }}
+  #     - name: Build and publish
+  #       run: |
+  #         export TAG=${{ env.TAG }}
+  #         docker compose -f docker-compose-build.yml build
+  #         docker images
+  #         docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ env.TAG }}
+  #         docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.TAG }}
+  #         docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}:${{ env.TAG }}
+  #       env:
+  #         TAG: ${{ env.TAG }}
 
   deploy:
-    needs: publish
+    # needs: publish
     name: deploy images
     runs-on: ubuntu-latest
 
@@ -55,6 +54,7 @@ jobs:
         run: |
           ssh ${{ secrets.SSH_USER_DEV }}@${{ secrets.SSH_HOST_DEV }} "\
           export TAG=${{ env.TAG }}
+          echo $TAG
           [ -d ${{ env.REPONAME }} ] || git clone git@github.com:${{ github.repository }}.git && \
           cd ${{ env.REPONAME }} && \
           git checkout dev && git pull && \
