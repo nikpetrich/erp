@@ -10,36 +10,36 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  MODE: dev
+  TAG: dev
   REPONAME: erp
-  BACKEND_IMAGE_NAME: ${{ github.repository }}/backend:dev
-  FRONTEND_IMAGE_NAME: ${{ github.repository }}/frontend:dev
-  BACKUP_IMAGE_NAME: ${{ github.repository }}/backup:dev
+  BACKEND_IMAGE_NAME: ${{ github.repository }}/backend
+  FRONTEND_IMAGE_NAME: ${{ github.repository }}/frontend
+  BACKUP_IMAGE_NAME: ${{ github.repository }}/backup
 
 jobs:
-  # publish:
-  # name: publish images
-  # runs-on: ubuntu-latest
+  publish:
+    name: publish images
+    runs-on: ubuntu-latest
 
-  # steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Login
-  #     run: |
-  #       echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login
+        run: |
+          echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-  #   - name: Build and publish
-  #     run: |
-  #       export TAG=${{ env.MODE }}
-  #       docker compose -f docker-compose-build.yml build
-  #       docker images
-  #       docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
-  #       docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
-  #       docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
-  #     env:
-  #       TAG: ${{ env.MODE }}
+      - name: Build and publish
+        run: |
+          export TAG=${{ env.TAG }}
+          docker compose -f docker-compose-build.yml build
+          docker images
+          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ env.TAG }}
+          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.TAG }}
+          docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}:${{ env.TAG }}
+        env:
+          TAG: ${{ env.TAG }}
 
   deploy:
-    # needs: publish
+    needs: publish
     name: deploy images
     runs-on: ubuntu-latest
 
@@ -53,7 +53,7 @@ jobs:
       - name: connect and pull
         run: |
           ssh ${{ secrets.SSH_USER_DEV }}@${{ secrets.SSH_HOST_DEV }} "\
-          export TAG=${{ env.MODE }}
+          export TAG=${{ env.TAG }}
           [ -d ${{ env.REPONAME }} ] || git clone git@github.com:${{ github.repository }}.git && \
           cd ${{ env.REPONAME }} && \
           git checkout dev && git pull && \
@@ -61,7 +61,7 @@ jobs:
           docker compose -f docker-compose-deploy.yml up -d && \
           exit"
         env:
-          TAG: ${{ env.MODE }}
+          TAG: ${{ env.TAG }}
 
       - name: cleanup
         run: rm -rf ~/.ssh
