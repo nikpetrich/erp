@@ -15,11 +15,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /opt/mysql/backup:/opt/mysql/backup
     command: crond -f -d 8
-    restart: always
 
   backend:
     container_name: ${BACKEND_CONTAINER_NAME}
-    restart: always
     build:
       context: ${BACKEND_CONTAINER_NAME}
       dockerfile: Dockerfile.prod
@@ -30,7 +28,6 @@ services:
 
   frontend:
     container_name: ${FRONTEND_CONTAINER_NAME}
-    restart: unless-stopped
     build:
       context: ${FRONTEND_CONTAINER_NAME}
       dockerfile: Dockerfile.prod
