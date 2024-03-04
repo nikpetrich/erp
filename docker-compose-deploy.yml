@@ -20,7 +20,7 @@ services:
     container_name: ${BACKUP_CONTAINER_NAME}
     depends_on:
       - ${DB_CONTAINER_NAME}
-    image: ghcr.io/${PROJECT_NAME}${BACKUP_CONTAINER_NAME}:${TAG}
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${BACKUP_CONTAINER_NAME}:${TAG}
     restart: always
     env_file: ./.env
 
@@ -29,7 +29,7 @@ services:
     depends_on:
       - ${DB_CONTAINER_NAME}
     restart: always
-    image: ghcr.io/${PROJECT_NAME}${BACKEND_CONTAINER_NAME}:${TAG}
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${BACKEND_CONTAINER_NAME}:${TAG}
     ports:
       - ${BACKEND_PORT}:${BACKEND_PORT}
     env_file: ./.env
@@ -39,7 +39,7 @@ services:
     depends_on:
       - ${BACKEND_CONTAINER_NAME}
     restart: unless-stopped
-    image: ghcr.io/${PROJECT_NAME}${FRONTEND_CONTAINER_NAME}:${TAG}
+    image: ${REGISTRY}/${GITHUB_ACTOR}/${PROJECT_NAME}/${FRONTEND_CONTAINER_NAME}:${TAG}
     ports:
       - 1112:80
     env_file: ./.env
