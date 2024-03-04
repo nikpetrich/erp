@@ -1,4 +1,6 @@
 name: Docker ci/cd development
+# Notes:
+# - Need to authenticate the `git clone` cmd when repository is private
 
 on:
   push:
@@ -8,9 +10,11 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: ${{ github.actor }}/erp/backend:dev
-  FRONTEND_IMAGE_NAME: ${{ github.actor }}/erp/frontend:dev
-  BACKUP_IMAGE_NAME: ${{ github.actor }}/erp/backup:dev
+  MODE: dev
+  REPONAME: erp
+  BACKEND_IMAGE_NAME: ${{ github.repository }}/backend:dev
+  FRONTEND_IMAGE_NAME: ${{ github.repository }}/frontend:dev
+  BACKUP_IMAGE_NAME: ${{ github.repository }}/backup:dev
 
 jobs:
   # publish:
@@ -25,14 +29,14 @@ jobs:
 
   #   - name: Build and publish
   #     run: |
-  #       export TAG=dev
+  #       export TAG=${{ env.MODE }}
   #       docker compose -f docker-compose-build.yml build
   #       docker images
   #       docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
   #       docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
   #       docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
   #     env:
-  #       TAG: dev
+  #       TAG: ${{ env.MODE }}
 
   deploy:
     # needs: publish
@@ -48,16 +52,16 @@ jobs:
 
       - name: connect and pull
         run: |
-          export TAG=dev
+          export TAG=${{ env.MODE }}
           ssh ${{ secrets.SSH_USER_DEV }}@${{ secrets.SSH_HOST_DEV }} "\
-          [ -d ${{ github.repository }} ] || git clone git@github.com:${{ github.repository }}.git && \
-          cd ${{ github.repository }} && \
-          git pull origin dev && \
+          [ -d ${{ env.REPONAME }} ] || git clone git@github.com:${{ github.repository }}.git && \
+          cd ${{ env.REPONAME }} && \
+          git checkout dev && git pull && \
           docker compose -f docker-compose-deploy.yml pull && \
           docker compose -f docker-compose-deploy.yml up -d && \
           exit"
         env:
-          TAG: dev
+          TAG: ${{ env.MODE }}
 
       - name: cleanup
         run: rm -rf ~/.ssh

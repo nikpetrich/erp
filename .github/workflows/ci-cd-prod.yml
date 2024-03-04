@@ -1,4 +1,6 @@
 name: Docker ci/cd production
+# Notes:
+# - Need to authenticate the `git clone` cmd when repository is private
 
 on:
   push:
