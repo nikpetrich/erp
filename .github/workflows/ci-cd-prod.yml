@@ -10,9 +10,11 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: ${{ github.actor }}/erp/backend:prod
-  FRONTEND_IMAGE_NAME: ${{ github.actor }}/erp/frontend:prod
-  BACKUP_IMAGE_NAME: ${{ github.actor }}/erp/backup:prod
+  TAG: prod
+  REPONAME: erp
+  BACKEND_IMAGE_NAME: ${{ github.repository }}/backend
+  FRONTEND_IMAGE_NAME: ${{ github.repository }}/frontend
+  BACKUP_IMAGE_NAME: ${{ github.repository }}/backup
 
 jobs:
   publish:
@@ -27,14 +29,14 @@ jobs:
 
       - name: Build and publish
         run: |
-          export TAG=prod
+          export TAG=${{ env.TAG }}
           docker compose -f docker-compose-build.yml build
           docker images
-          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
-          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
-          docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
+          docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ env.TAG }}
+          docker push ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.TAG }}
+          docker push ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}:${{ env.TAG }}
         env:
-          TAG: prod
+          TAG: ${{ env.TAG }}
 
   deploy:
     needs: publish
@@ -48,18 +50,19 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST_PROD }} > ~/.ssh/known_hosts
 
-      - name: connect and pull
+      - name: connect and deploy
         run: |
-          export TAG=prod
           ssh ${{ secrets.SSH_USER_PROD }}@${{ secrets.SSH_HOST_PROD }} "\
-          [ -d ${{ github.repository }} ] || mkdir -p ${{ github.repository }} && \
-          cd ${{ github.repository }} && \
-          curl -O -L https://raw.githubusercontent.com/${{ github.repository }}/main/docker-compose-deploy.yml && \
+          export TAG=${{ env.TAG }}
+          echo $TAG
+          [ -d ${{ env.REPONAME }} ] || git clone git@github.com:${{ github.repository }}.git && \
+          cd ${{ env.REPONAME }} && \
+          git checkout main && git pull && \
           docker compose -f docker-compose-deploy.yml pull && \
           docker compose -f docker-compose-deploy.yml up -d && \
           exit"
         env:
-          TAG: prod
+          TAG: ${{ env.TAG }}
 
       - name: cleanup
         run: rm -rf ~/.ssh
