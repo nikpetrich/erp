@@ -19,6 +19,7 @@ export class MariaDBConfigService implements TypeOrmOptionsFactory {
       entities: [this.configService.get<string>('DB_ENTITIES')],
       keepConnectionAlive: true,
       namingStrategy: new SnakeNamingStrategy(),
+      synchronize: Boolean(this.configService.get<string>('DB_SYNCHRONIZE')),
     };
   }
 }

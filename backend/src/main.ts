@@ -12,6 +12,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get('BACKEND_PORT');
+
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(port);
