@@ -1,7 +1,5 @@
 FROM node:20-alpine
 
-ARG FRONTEND_PORT
-
 # Create app directory
 WORKDIR /app
 
@@ -18,4 +16,5 @@ RUN npm i
 COPY . .
 
 # Run the app
-CMD npm start --host 0.0.0.0 --port ${FRONTEND_PORT} --disableHostCheck true
+# TODO: need to figure out the necessary of all parameters
+CMD npm start --host 0.0.0.0 --port 3000 --disableHostCheck true

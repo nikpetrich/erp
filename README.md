@@ -14,7 +14,9 @@ The ERP (Enterprise Resource Planning) system is a comprehensive software soluti
 ## Setup
 
 1. Clone the repository: `git clone git@github.com:nikpetrich/risk-dice.git`
-2. Local development: `docker compose up` (if you want the IDE do not complain you about missing packages install the npm packages manually in each project part)
+2. Local development: `docker compose up`
+   - If you want the IDE do not complain you about missing packages install the npm packages manually in each project part
+   - When you want to install/remove npm packages then you will have to delete the volume of the according service and restart the docker demon
 
 ## License
 

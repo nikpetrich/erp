@@ -3,7 +3,7 @@ version: "3.9"
 services:
   database:
     container_name: ${DB_CONTAINER_NAME}
-    image: mariadb:11.3.2-jammy
+    image: mariadb:10.11.7-jammy
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -24,12 +24,14 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - ${BACKEND_PORT}:${BACKEND_PORT}
-      - '9229:9229'
+      - 9229:9229
     volumes:
       - ./${BACKEND_CONTAINER_NAME}:/app
       - backend_node_modules:/app/node_modules
     env_file: ./.env
     restart: always
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT}
 
   frontend:
     container_name: ${FRONTEND_CONTAINER_NAME}
@@ -38,10 +40,8 @@ services:
     build:
       context: ${FRONTEND_CONTAINER_NAME}
       dockerfile: Dockerfile.dev
-      args:
-        - FRONTEND_PORT=${FRONTEND_PORT}
     ports:
-      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+      - 3000:3000
     volumes:
       - ./${FRONTEND_CONTAINER_NAME}:/app:delegated
       - frontend_node_modules:/app/node_modules
