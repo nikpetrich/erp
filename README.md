@@ -1,4 +1,4 @@
-# Project Name: ERP System
+# ERP System
 
 ## Description
 
