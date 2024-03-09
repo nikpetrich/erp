@@ -13,4 +13,13 @@ export class CreateInvoiceInput {
 
   @Field()
   additionalInfo: string;
+
+  // @Field()
+  // client: Client;
+
+  // @Field()
+  // user: User;
+
+  // @Field()
+  // customer: Customer;
 }

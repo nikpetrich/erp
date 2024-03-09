@@ -1,4 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { MutationRequestOutput } from 'src/common/dto/mutation-request.output';
 import { CustomerService } from './customer.service';
 import { CreateCustomerInput } from './dto/create-customer.input';
 import { UpdateCustomerInput } from './dto/update-customer.input';
@@ -8,7 +9,7 @@ import { Customer } from './entities/customer.entity';
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
-  @Mutation(() => Customer)
+  @Mutation(() => MutationRequestOutput)
   createCustomer(
     @Args('createCustomerInput') createCustomerInput: CreateCustomerInput,
   ) {
@@ -25,7 +26,7 @@ export class CustomerResolver {
     return this.customerService.findOne(id);
   }
 
-  @Mutation(() => Customer)
+  @Mutation(() => MutationRequestOutput)
   updateCustomer(
     @Args('id', { type: () => Int }) id: number,
     @Args('updateCustomerInput') updateCustomerInput: UpdateCustomerInput,
@@ -33,7 +34,7 @@ export class CustomerResolver {
     return this.customerService.update(id, updateCustomerInput);
   }
 
-  @Mutation(() => Customer)
+  @Mutation(() => MutationRequestOutput)
   removeCustomer(@Args('id', { type: () => Int }) id: number) {
     return this.customerService.remove(id);
   }

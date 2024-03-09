@@ -1,4 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { MutationRequestOutput } from 'src/common/dto/mutation-request.output';
 import { ArticleService } from './article.service';
 import { CreateArticleInput } from './dto/create-article.input';
 import { UpdateArticleInput } from './dto/update-article.input';
@@ -8,7 +9,7 @@ import { Article } from './entities/article.entity';
 export class ArticleResolver {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Mutation(() => Article)
+  @Mutation(() => MutationRequestOutput)
   createArticle(
     @Args('createArticleInput') createArticleInput: CreateArticleInput,
   ) {
@@ -25,7 +26,7 @@ export class ArticleResolver {
     return this.articleService.findOne(id);
   }
 
-  @Mutation(() => Article)
+  @Mutation(() => MutationRequestOutput)
   updateArticle(
     @Args('id', { type: () => Int }) id: number,
     @Args('updateArticleInput') updateArticleInput: UpdateArticleInput,
@@ -33,7 +34,7 @@ export class ArticleResolver {
     return this.articleService.update(id, updateArticleInput);
   }
 
-  @Mutation(() => Article)
+  @Mutation(() => MutationRequestOutput)
   removeArticle(@Args('id', { type: () => Int }) id: number) {
     return this.articleService.remove(id);
   }

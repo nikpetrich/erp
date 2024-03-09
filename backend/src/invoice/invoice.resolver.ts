@@ -1,4 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { MutationRequestOutput } from 'src/common/dto/mutation-request.output';
 import { CreateInvoiceInput } from './dto/create-invoice.input';
 import { UpdateInvoiceInput } from './dto/update-invoice.input';
 import { Invoice } from './entities/invoice.entity';
@@ -8,7 +9,7 @@ import { InvoiceService } from './invoice.service';
 export class InvoiceResolver {
   constructor(private readonly invoiceService: InvoiceService) {}
 
-  @Mutation(() => Invoice)
+  @Mutation(() => MutationRequestOutput)
   createInvoice(
     @Args('createInvoiceInput') createInvoiceInput: CreateInvoiceInput,
   ) {
@@ -25,7 +26,7 @@ export class InvoiceResolver {
     return this.invoiceService.findOne(id);
   }
 
-  @Mutation(() => Invoice)
+  @Mutation(() => MutationRequestOutput)
   updateInvoice(
     @Args('id', { type: () => Int }) id: number,
     @Args('updateInvoiceInput') updateInvoiceInput: UpdateInvoiceInput,
@@ -33,7 +34,7 @@ export class InvoiceResolver {
     return this.invoiceService.update(id, updateInvoiceInput);
   }
 
-  @Mutation(() => Invoice)
+  @Mutation(() => MutationRequestOutput)
   removeInvoice(@Args('id', { type: () => Int }) id: number) {
     return this.invoiceService.remove(id);
   }

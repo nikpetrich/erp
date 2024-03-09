@@ -10,39 +10,44 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 @Entity()
 @ObjectType()
 export class Warehouse {
   @PrimaryGeneratedColumn()
-  @Field(() => Int)
+  @Field(() => Int, { nullable: false })
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: false })
   title: string;
 
-  @Column()
-  @Field()
-  phone: string;
+  @Column({ type: 'varchar', nullable: true })
+  @Field(() => String, { nullable: true })
+  phone?: string;
 
-  @Column()
-  @Field()
-  mail: string;
+  @Column({ type: 'varchar', nullable: true })
+  @Field(() => String, { nullable: true })
+  mail?: string;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  @Field()
+  @UpdateDateColumn({ type: 'timestamp', nullable: false })
+  @Field(() => Date, { nullable: false })
   modified: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  @Field()
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  @Field(() => Date, { nullable: false })
   created: Date;
 
   @OneToMany(() => Article, (article) => article.warehouse)
-  @Field(() => [Article])
-  articles: Article[];
+  @Field(() => [Article], { nullable: true })
+  articles?: Article[];
 
   @ManyToOne(() => Address)
   @JoinColumn()
-  @Field(() => Address)
-  address: Address;
+  @Field(() => Address, { nullable: true })
+  address?: Address;
 }

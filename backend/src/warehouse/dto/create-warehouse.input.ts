@@ -2,12 +2,15 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateWarehouseInput {
-  @Field()
+  @Field(() => String, { nullable: false })
   title: string;
 
-  @Field()
-  phone: string;
+  @Field(() => String, { nullable: true })
+  phone?: string;
 
-  @Field()
-  mail: string;
+  @Field(() => String, { nullable: true })
+  mail?: string;
+
+  // @Field(() => Address)
+  // address: Address;
 }

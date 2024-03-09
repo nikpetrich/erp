@@ -10,4 +10,7 @@ export class CreateClientInput {
 
   @Field()
   mail: string;
+
+  // @Field(() => Address)
+  // address: Address;
 }
