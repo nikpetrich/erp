@@ -4,16 +4,16 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { AddressesModule } from './addresses/addresses.module';
+import { AddressModule } from './address/address.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ArticlesModule } from './articles/articles.module';
-import { ClientsModule } from './clients/clients.module';
-import { CustomersModule } from './customers/customers.module';
-import { InvoicesModule } from './invoices/invoices.module';
+import { ArticleModule } from './article/article.module';
+import { ClientModule } from './client/client.module';
+import { CustomerModule } from './customer/customer.module';
+import { InvoiceModule } from './invoice/invoice.module';
 import { MariaDBConfigService } from './mariadb.config.service';
-import { UsersModule } from './users/users.module';
-import { WarehousesModule } from './warehouses/warehouses.module';
+import { UserModule } from './user/user.module';
+import { WarehouseModule } from './warehouse/warehouse.module';
 
 @Module({
   imports: [
@@ -26,13 +26,13 @@ import { WarehousesModule } from './warehouses/warehouses.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    AddressesModule,
-    ClientsModule,
-    CustomersModule,
-    ArticlesModule,
-    InvoicesModule,
-    UsersModule,
-    WarehousesModule,
+    AddressModule,
+    ClientModule,
+    CustomerModule,
+    ArticleModule,
+    InvoiceModule,
+    UserModule,
+    WarehouseModule,
   ],
   controllers: [AppController],
   providers: [AppService, MariaDBConfigService],
