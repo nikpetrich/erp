@@ -4,16 +4,16 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { AddressModule } from './address/address.module';
+import { AddressControllerModule } from './address/address.controller.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ArticleModule } from './article/article.module';
-import { ClientModule } from './client/client.module';
-import { CustomerModule } from './customer/customer.module';
-import { InvoiceModule } from './invoice/invoice.module';
+import { ArticleControllerModule } from './article/article.controller.module';
+import { ClientControllerModule } from './client/client.controller.module';
+import { CustomerControllerModule } from './customer/customer.controller.module';
+import { InvoiceControllerModule } from './invoice/invoice.controller.module';
 import { MariaDBConfigService } from './mariadb.config.service';
-import { UserModule } from './user/user.module';
-import { WarehouseModule } from './warehouse/warehouse.module';
+import { UserControllerModule } from './user/user.controller.module';
+import { WarehouseControllerModule } from './warehouse/warehouse.controller.module';
 
 @Module({
   imports: [
@@ -26,13 +26,13 @@ import { WarehouseModule } from './warehouse/warehouse.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    AddressModule,
-    ClientModule,
-    CustomerModule,
-    ArticleModule,
-    InvoiceModule,
-    UserModule,
-    WarehouseModule,
+    AddressControllerModule,
+    ClientControllerModule,
+    CustomerControllerModule,
+    ArticleControllerModule,
+    InvoiceControllerModule,
+    UserControllerModule,
+    WarehouseControllerModule,
   ],
   controllers: [AppController],
   providers: [AppService, MariaDBConfigService],
