@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAddressInput } from './dto/create-address.input';
@@ -7,31 +11,67 @@ import { Address } from './entities/address.entity';
 
 @Injectable()
 export class AddressService {
+  private readonly logger = new Logger(AddressService.name);
   constructor(
     @InjectRepository(Address)
     private readonly addressRepository: Repository<Address>,
   ) {}
 
-  create(createAddressInput: CreateAddressInput) {
+  async create(createAddressInput: CreateAddressInput) {
     const address = this.addressRepository.create(createAddressInput);
-    return this.addressRepository.save(address);
+    try {
+      await this.addressRepository.save(address);
+      return { succeeded: true };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   findAll(): Promise<Address[]> {
-    return this.addressRepository.find();
+    try {
+      return this.addressRepository.find();
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   findOne(id: number) {
-    return this.addressRepository.findOneBy({ id });
+    try {
+      return this.addressRepository.findOneBy({ id });
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(id: number, updateAddressInput: UpdateAddressInput) {
-    const result = await this.addressRepository.update(id, updateAddressInput);
-    return { succeeded: result.affected > 0 ?? false };
+    try {
+      const result = await this.addressRepository.update(
+        id,
+        updateAddressInput,
+      );
+
+      if (!result.affected) throw new Error('Item could not be updated');
+
+      return { succeeded: true };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async remove(id: number) {
-    const result = await this.addressRepository.delete(id);
-    return { succeeded: result.affected > 0 ?? false };
+    try {
+      const result = await this.addressRepository.delete(id);
+
+      if (!result.affected) throw new Error('Item could not be updated');
+
+      return { succeeded: true };
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

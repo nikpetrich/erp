@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UpdateRequestOutput {
+type MutationRequestOutput {
   succeeded: Float!
 }
 
@@ -113,9 +113,9 @@ type Query {
 }
 
 type Mutation {
-  createAddress(createAddressInput: CreateAddressInput!): Address!
-  updateAddress(id: Int!, updateAddressInput: UpdateAddressInput!): UpdateRequestOutput!
-  removeAddress(id: Int!): Address!
+  createAddress(createAddressInput: CreateAddressInput!): MutationRequestOutput!
+  updateAddress(id: Int!, updateAddressInput: UpdateAddressInput!): MutationRequestOutput!
+  removeAddress(id: Int!): MutationRequestOutput!
   createClient(createClientInput: CreateClientInput!): Client!
   updateClient(updateClientInput: UpdateClientInput!): Client!
   removeClient(id: Int!): Client!

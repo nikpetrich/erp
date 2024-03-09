@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class UpdateRequestOutput {
+export class MutationRequestOutput {
   @Field()
   succeeded: number;
 }
