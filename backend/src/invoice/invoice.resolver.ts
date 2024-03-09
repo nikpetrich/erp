@@ -27,12 +27,10 @@ export class InvoiceResolver {
 
   @Mutation(() => Invoice)
   updateInvoice(
+    @Args('id', { type: () => Int }) id: number,
     @Args('updateInvoiceInput') updateInvoiceInput: UpdateInvoiceInput,
   ) {
-    return this.invoiceService.update(
-      updateInvoiceInput.id,
-      updateInvoiceInput,
-    );
+    return this.invoiceService.update(id, updateInvoiceInput);
   }
 
   @Mutation(() => Invoice)

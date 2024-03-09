@@ -27,12 +27,10 @@ export class WarehouseResolver {
 
   @Mutation(() => Warehouse)
   updateWarehouse(
+    @Args('id', { type: () => Int }) id: number,
     @Args('updateWarehouseInput') updateWarehouseInput: UpdateWarehouseInput,
   ) {
-    return this.warehouseService.update(
-      updateWarehouseInput.id,
-      updateWarehouseInput,
-    );
+    return this.warehouseService.update(id, updateWarehouseInput);
   }
 
   @Mutation(() => Warehouse)

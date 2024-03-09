@@ -27,12 +27,10 @@ export class ArticleResolver {
 
   @Mutation(() => Article)
   updateArticle(
+    @Args('id', { type: () => Int }) id: number,
     @Args('updateArticleInput') updateArticleInput: UpdateArticleInput,
   ) {
-    return this.articleService.update(
-      updateArticleInput.id,
-      updateArticleInput,
-    );
+    return this.articleService.update(id, updateArticleInput);
   }
 
   @Mutation(() => Article)

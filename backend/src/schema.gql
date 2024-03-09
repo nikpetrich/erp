@@ -117,22 +117,22 @@ type Mutation {
   updateAddress(id: Int!, updateAddressInput: UpdateAddressInput!): MutationRequestOutput!
   removeAddress(id: Int!): MutationRequestOutput!
   createClient(createClientInput: CreateClientInput!): Client!
-  updateClient(updateClientInput: UpdateClientInput!): Client!
+  updateClient(id: Int!, updateClientInput: UpdateClientInput!): Client!
   removeClient(id: Int!): Client!
   createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
-  updateCustomer(updateCustomerInput: UpdateCustomerInput!): Customer!
+  updateCustomer(id: Int!, updateCustomerInput: UpdateCustomerInput!): Customer!
   removeCustomer(id: Int!): Customer!
   createArticle(createArticleInput: CreateArticleInput!): Article!
-  updateArticle(updateArticleInput: UpdateArticleInput!): Article!
+  updateArticle(id: Int!, updateArticleInput: UpdateArticleInput!): Article!
   removeArticle(id: Int!): Article!
   createInvoice(createInvoiceInput: CreateInvoiceInput!): Invoice!
-  updateInvoice(updateInvoiceInput: UpdateInvoiceInput!): Invoice!
+  updateInvoice(id: Int!, updateInvoiceInput: UpdateInvoiceInput!): Invoice!
   removeInvoice(id: Int!): Invoice!
   createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
+  updateUser(id: Int!, updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
   createWarehouse(createWarehouseInput: CreateWarehouseInput!): Warehouse!
-  updateWarehouse(updateWarehouseInput: UpdateWarehouseInput!): Warehouse!
+  updateWarehouse(id: Int!, updateWarehouseInput: UpdateWarehouseInput!): Warehouse!
   removeWarehouse(id: Int!): Warehouse!
 }
 
@@ -153,67 +153,81 @@ input UpdateAddressInput {
 }
 
 input CreateClientInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  title: String!
+  phone: String!
+  mail: String!
 }
 
 input UpdateClientInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  title: String
+  phone: String
+  mail: String
 }
 
 input CreateCustomerInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  title: String!
+  phone: String!
+  mail: String!
 }
 
 input UpdateCustomerInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  title: String
+  phone: String
+  mail: String
 }
 
 input CreateArticleInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  number: String!
+  title: String!
+  price: Float!
+  amount: Float!
+  status: Float!
+  manufacturer: String!
 }
 
 input UpdateArticleInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  number: String
+  title: String
+  price: Float
+  amount: Float
+  status: Float
+  manufacturer: String
 }
 
 input CreateInvoiceInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  title: String!
+  discount: String!
+  payedBy: Float!
+  additionalInfo: String!
 }
 
 input UpdateInvoiceInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  title: String
+  discount: String
+  payedBy: Float
+  additionalInfo: String
 }
 
 input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  username: String!
+  password: String!
+  role: Float!
 }
 
 input UpdateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  username: String
+  password: String
+  role: Float
 }
 
 input CreateWarehouseInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  title: String!
+  phone: String!
+  mail: String!
 }
 
 input UpdateWarehouseInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  title: String
+  phone: String
+  mail: String
 }

@@ -27,12 +27,10 @@ export class CustomerResolver {
 
   @Mutation(() => Customer)
   updateCustomer(
+    @Args('id', { type: () => Int }) id: number,
     @Args('updateCustomerInput') updateCustomerInput: UpdateCustomerInput,
   ) {
-    return this.customerService.update(
-      updateCustomerInput.id,
-      updateCustomerInput,
-    );
+    return this.customerService.update(id, updateCustomerInput);
   }
 
   @Mutation(() => Customer)
