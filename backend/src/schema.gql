@@ -38,47 +38,47 @@ type Article {
 type Customer {
   id: Int!
   title: String!
-  phone: String!
-  mail: String!
+  phone: String
+  mail: String
   modified: DateTime!
   created: DateTime!
-  invoices: [Invoice!]!
-  address: Address!
+  invoices: [Invoice!]
+  address: Address
 }
 
 type User {
   id: Int!
   username: String!
   password: String!
-  role: Float!
+  role: Int!
   modified: DateTime!
   created: DateTime!
-  invoices: [Invoice!]!
+  invoices: [Invoice!]
 }
 
 type Invoice {
   id: Int!
   title: String!
-  discount: String!
-  payedBy: Float!
-  additionalInfo: String!
+  discount: Int
+  payedBy: Int!
+  additionalInfo: String
   modified: DateTime!
   created: DateTime!
-  client: Client!
-  user: User!
-  customer: Customer!
+  client: Client
+  user: User
+  customer: Customer
   articles: [Article!]!
 }
 
 type Client {
   id: Int!
   title: String!
-  phone: String!
-  mail: String!
+  phone: String
+  mail: String
   modified: DateTime!
   created: DateTime!
-  address: Address!
-  invoices: [Invoice!]!
+  address: Address
+  invoices: [Invoice!]
 }
 
 type Address {
@@ -90,9 +90,9 @@ type Address {
   houseNumber: String!
   modified: DateTime!
   created: DateTime!
-  customers: [Customer!]!
-  warehouses: [Warehouse!]!
-  clients: [Client!]!
+  customers: [Customer!]
+  warehouses: [Warehouse!]
+  clients: [Client!]
 }
 
 type Query {
@@ -154,26 +154,30 @@ input UpdateAddressInput {
 
 input CreateClientInput {
   title: String!
-  phone: String!
-  mail: String!
+  phone: String
+  mail: String
+  addressId: Int
 }
 
 input UpdateClientInput {
   title: String
   phone: String
   mail: String
+  addressId: Int
 }
 
 input CreateCustomerInput {
   title: String!
-  phone: String!
-  mail: String!
+  phone: String
+  mail: String
+  addressId: Int
 }
 
 input UpdateCustomerInput {
   title: String
   phone: String
   mail: String
+  addressId: Int
 }
 
 input CreateArticleInput {
@@ -198,38 +202,46 @@ input UpdateArticleInput {
 
 input CreateInvoiceInput {
   title: String!
-  discount: String!
-  payedBy: Float!
-  additionalInfo: String!
+  discount: Int
+  payedBy: Int!
+  additionalInfo: String
+  clientId: Int
+  userId: Int
+  customerId: Int
 }
 
 input UpdateInvoiceInput {
   title: String
-  discount: String
-  payedBy: Float
+  discount: Int
+  payedBy: Int
   additionalInfo: String
+  clientId: Int
+  userId: Int
+  customerId: Int
 }
 
 input CreateUserInput {
   username: String!
   password: String!
-  role: Float!
+  role: Int!
 }
 
 input UpdateUserInput {
   username: String
   password: String
-  role: Float
+  role: Int
 }
 
 input CreateWarehouseInput {
   title: String!
   phone: String
   mail: String
+  addressId: Int
 }
 
 input UpdateWarehouseInput {
   title: String
   phone: String
   mail: String
+  addressId: Int
 }

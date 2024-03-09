@@ -1,16 +1,16 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class CreateCustomerInput {
-  @Field()
+  @Field(() => String, { nullable: false })
   title: string;
 
-  @Field()
-  phone: string;
+  @Field(() => String, { nullable: true })
+  phone?: string;
 
-  @Field()
-  mail: string;
+  @Field(() => String, { nullable: true })
+  mail?: string;
 
-  // @Field(() => Address)
-  // address: Address;
+  @Field(() => Int, { nullable: true })
+  addressId?: number;
 }

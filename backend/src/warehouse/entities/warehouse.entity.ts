@@ -42,12 +42,18 @@ export class Warehouse {
   @Field(() => Date, { nullable: false })
   created: Date;
 
-  @OneToMany(() => Article, (article) => article.warehouse)
+  @OneToMany(() => Article, (article) => article.warehouse, { nullable: true })
   @Field(() => [Article], { nullable: true })
   articles?: Article[];
 
-  @ManyToOne(() => Address)
-  @JoinColumn()
+  @ManyToOne(() => Address, (address) => address.warehouses, {
+    eager: true,
+    nullable: true,
+  })
+  @JoinColumn({ name: 'address_id' })
   @Field(() => Address, { nullable: true })
   address?: Address;
+
+  @Column({ type: 'int', name: 'address_id', nullable: false })
+  addressId?: number;
 }

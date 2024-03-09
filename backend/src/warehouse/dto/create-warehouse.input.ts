@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class CreateWarehouseInput {
@@ -11,6 +11,6 @@ export class CreateWarehouseInput {
   @Field(() => String, { nullable: true })
   mail?: string;
 
-  // @Field(() => Address)
-  // address: Address;
+  @Field(() => Int, { nullable: true })
+  addressId: number;
 }

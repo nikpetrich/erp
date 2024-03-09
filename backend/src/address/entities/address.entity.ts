@@ -14,46 +14,52 @@ import {
 @ObjectType()
 export class Address {
   @PrimaryGeneratedColumn()
-  @Field(() => Int)
+  @Field(() => Int, { nullable: false })
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: false })
   city: string;
 
-  @Column()
-  @Field()
+  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: false })
   country: string;
 
-  @Column()
-  @Field()
+  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: false })
   zip: string;
 
-  @Column()
-  @Field()
+  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: false })
   street: string;
 
-  @Column()
-  @Field()
+  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: false })
   houseNumber: string;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  @Field()
+  @UpdateDateColumn({ type: 'timestamp', nullable: false })
+  @Field(() => Date, { nullable: false })
   modified: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  @Field()
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  @Field(() => Date, { nullable: false })
   created: Date;
 
-  @OneToMany(() => Customer, (customer) => customer.address)
-  @Field(() => [Customer])
-  customers: Customer[];
+  @OneToMany(() => Customer, (customer) => customer.address, { nullable: true })
+  @Field(() => [Customer], { nullable: true })
+  customers?: Customer[];
 
-  @OneToMany(() => Warehouse, (warehouse) => warehouse.address)
-  @Field(() => [Warehouse])
-  warehouses: Warehouse[];
+  @OneToMany(() => Warehouse, (warehouse) => warehouse.address, {
+    nullable: true,
+  })
+  @Field(() => [Warehouse], { nullable: true })
+  warehouses?: Warehouse[];
 
-  @OneToMany(() => Client, (client) => client.address)
-  @Field(() => [Client])
-  clients: Client[];
+  @OneToMany(() => Client, (client) => client.address, { nullable: true })
+  @Field(() => [Client], { nullable: true })
+  clients?: Client[];
 }

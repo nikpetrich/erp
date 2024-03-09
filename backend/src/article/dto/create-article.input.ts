@@ -21,5 +21,5 @@ export class CreateArticleInput {
   manufacturer?: string;
 
   @Field(() => Int, { nullable: true })
-  warehouseId: number;
+  warehouseId?: number;
 }

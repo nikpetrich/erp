@@ -14,35 +14,49 @@ import {
 @ObjectType()
 export class Customer {
   @PrimaryGeneratedColumn()
-  @Field(() => Int)
+  @Field(() => Int, { nullable: false })
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: false })
   title: string;
 
-  @Column()
-  @Field()
-  phone: string;
+  @Column({ type: 'varchar', nullable: true })
+  @Field(() => String, { nullable: true })
+  phone?: string;
 
-  @Column()
-  @Field()
-  mail: string;
+  @Column({ type: 'varchar', nullable: true })
+  @Field(() => String, { nullable: true })
+  mail?: string;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  @Field()
+  @UpdateDateColumn({ type: 'timestamp', nullable: false })
+  @Field(() => Date, { nullable: false })
   modified: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  @Field()
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  @Field(() => Date, { nullable: false })
   created: Date;
 
-  @OneToMany(() => Invoice, (invoice) => invoice.customer)
-  @Field(() => [Invoice])
-  invoices: Invoice[];
+  @OneToMany(() => Invoice, (invoice) => invoice.customer, {
+    nullable: true,
+  })
+  @Field(() => [Invoice], {
+    nullable: true,
+  })
+  invoices?: Invoice[];
 
-  @ManyToOne(() => Address)
-  @JoinColumn()
-  @Field(() => Address)
-  address: Address;
+  @ManyToOne(() => Address, (address) => address.warehouses, {
+    eager: true,
+    nullable: true,
+  })
+  @JoinColumn({ name: 'address_id' })
+  @Field(() => Address, { nullable: true })
+  address?: Address;
+
+  @Column({ type: 'int', name: 'address_id', nullable: false })
+  addressId?: number;
 }
