@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -39,11 +40,11 @@ export class Article {
   @Field()
   manufacturer: string;
 
-  @Column()
+  @UpdateDateColumn({ type: 'timestamp' })
   @Field()
   modified: Date;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field()
   created: Date;
 

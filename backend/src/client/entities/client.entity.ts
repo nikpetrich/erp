@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -29,11 +30,11 @@ export class Client {
   @Field()
   mail: string;
 
-  @Column()
+  @UpdateDateColumn({ type: 'timestamp' })
   @Field()
   modified: Date;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field()
   created: Date;
 
