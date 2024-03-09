@@ -2,7 +2,13 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Client } from 'src/client/entities/client.entity';
 import { Customer } from 'src/customer/entities/customer.entity';
 import { Warehouse } from 'src/warehouse/entities/warehouse.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -29,9 +35,13 @@ export class Address {
 
   @Column()
   @Field()
+  houseNumber: string;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  @Field()
   modified: Date;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field()
   created: Date;
 

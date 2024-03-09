@@ -6,30 +6,30 @@ import { Article } from './entities/article.entity';
 
 @Resolver(() => Article)
 export class ArticleResolver {
-  constructor(private readonly articlesService: ArticleService) {}
+  constructor(private readonly articleService: ArticleService) {}
 
   @Mutation(() => Article)
   createArticle(
     @Args('createArticleInput') createArticleInput: CreateArticleInput,
   ) {
-    return this.articlesService.create(createArticleInput);
+    return this.articleService.create(createArticleInput);
   }
 
   @Query(() => [Article], { name: 'articles' })
   findAll() {
-    return this.articlesService.findAll();
+    return this.articleService.findAll();
   }
 
   @Query(() => Article, { name: 'article' })
   findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.articlesService.findOne(id);
+    return this.articleService.findOne(id);
   }
 
   @Mutation(() => Article)
   updateArticle(
     @Args('updateArticleInput') updateArticleInput: UpdateArticleInput,
   ) {
-    return this.articlesService.update(
+    return this.articleService.update(
       updateArticleInput.id,
       updateArticleInput,
     );
@@ -37,6 +37,6 @@ export class ArticleResolver {
 
   @Mutation(() => Article)
   removeArticle(@Args('id', { type: () => Int }) id: number) {
-    return this.articlesService.remove(id);
+    return this.articleService.remove(id);
   }
 }

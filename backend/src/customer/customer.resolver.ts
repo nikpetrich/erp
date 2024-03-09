@@ -6,30 +6,30 @@ import { Customer } from './entities/customer.entity';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
-  constructor(private readonly customersService: CustomerService) {}
+  constructor(private readonly customerService: CustomerService) {}
 
   @Mutation(() => Customer)
   createCustomer(
     @Args('createCustomerInput') createCustomerInput: CreateCustomerInput,
   ) {
-    return this.customersService.create(createCustomerInput);
+    return this.customerService.create(createCustomerInput);
   }
 
   @Query(() => [Customer], { name: 'customers' })
   findAll() {
-    return this.customersService.findAll();
+    return this.customerService.findAll();
   }
 
   @Query(() => Customer, { name: 'customer' })
   findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.customersService.findOne(id);
+    return this.customerService.findOne(id);
   }
 
   @Mutation(() => Customer)
   updateCustomer(
     @Args('updateCustomerInput') updateCustomerInput: UpdateCustomerInput,
   ) {
-    return this.customersService.update(
+    return this.customerService.update(
       updateCustomerInput.id,
       updateCustomerInput,
     );
@@ -37,6 +37,6 @@ export class CustomerResolver {
 
   @Mutation(() => Customer)
   removeCustomer(@Args('id', { type: () => Int }) id: number) {
-    return this.customersService.remove(id);
+    return this.customerService.remove(id);
   }
 }

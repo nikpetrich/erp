@@ -4,16 +4,16 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { AddressControllerModule } from './address/address.controller.module';
+import { AddressResolverModule } from './address/address.resolver.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ArticleControllerModule } from './article/article.controller.module';
-import { ClientControllerModule } from './client/client.controller.module';
-import { CustomerControllerModule } from './customer/customer.controller.module';
-import { InvoiceControllerModule } from './invoice/invoice.controller.module';
+import { ArticleResolverModule } from './article/article.resolver.module';
+import { ClientControllerModule } from './client/client.resolver.module';
+import { CustomerResolverModule } from './customer/customer.resolver.module';
+import { InvoiceControllerModule } from './invoice/invoice.resolver.module';
 import { MariaDBConfigService } from './mariadb.config.service';
-import { UserControllerModule } from './user/user.controller.module';
-import { WarehouseControllerModule } from './warehouse/warehouse.controller.module';
+import { UserResolverModule } from './user/user.resolver.module';
+import { WarehouseResolverModule } from './warehouse/warehouse.resolver.module';
 
 @Module({
   imports: [
@@ -26,13 +26,13 @@ import { WarehouseControllerModule } from './warehouse/warehouse.controller.modu
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    AddressControllerModule,
+    AddressResolverModule,
     ClientControllerModule,
-    CustomerControllerModule,
-    ArticleControllerModule,
+    CustomerResolverModule,
+    ArticleResolverModule,
     InvoiceControllerModule,
-    UserControllerModule,
-    WarehouseControllerModule,
+    UserResolverModule,
+    WarehouseResolverModule,
   ],
   controllers: [AppController],
   providers: [AppService, MariaDBConfigService],

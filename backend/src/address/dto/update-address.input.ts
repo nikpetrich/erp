@@ -1,8 +1,5 @@
+import { InputType, PartialType } from '@nestjs/graphql';
 import { CreateAddressInput } from './create-address.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateAddressInput extends PartialType(CreateAddressInput) {
-  @Field(() => Int)
-  id: number;
-}
+export class UpdateAddressInput extends PartialType(CreateAddressInput) {}

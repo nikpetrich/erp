@@ -2,6 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type UpdateRequestOutput {
+  succeeded: Float!
+}
+
 type Warehouse {
   id: Int!
   title: String!
@@ -83,6 +87,7 @@ type Address {
   country: String!
   zip: String!
   street: String!
+  houseNumber: String!
   modified: DateTime!
   created: DateTime!
   customers: [Customer!]!
@@ -109,7 +114,7 @@ type Query {
 
 type Mutation {
   createAddress(createAddressInput: CreateAddressInput!): Address!
-  updateAddress(updateAddressInput: UpdateAddressInput!): Address!
+  updateAddress(id: Int!, updateAddressInput: UpdateAddressInput!): UpdateRequestOutput!
   removeAddress(id: Int!): Address!
   createClient(createClientInput: CreateClientInput!): Client!
   updateClient(updateClientInput: UpdateClientInput!): Client!
@@ -132,14 +137,19 @@ type Mutation {
 }
 
 input CreateAddressInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  city: String!
+  country: String!
+  zip: String!
+  street: String!
+  houseNumber: String!
 }
 
 input UpdateAddressInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  city: String
+  country: String
+  zip: String
+  street: String
+  houseNumber: String
 }
 
 input CreateClientInput {

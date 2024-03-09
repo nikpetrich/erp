@@ -6,30 +6,30 @@ import { InvoiceService } from './invoice.service';
 
 @Resolver(() => Invoice)
 export class InvoiceResolver {
-  constructor(private readonly invoicesService: InvoiceService) {}
+  constructor(private readonly invoiceService: InvoiceService) {}
 
   @Mutation(() => Invoice)
   createInvoice(
     @Args('createInvoiceInput') createInvoiceInput: CreateInvoiceInput,
   ) {
-    return this.invoicesService.create(createInvoiceInput);
+    return this.invoiceService.create(createInvoiceInput);
   }
 
   @Query(() => [Invoice], { name: 'invoices' })
   findAll() {
-    return this.invoicesService.findAll();
+    return this.invoiceService.findAll();
   }
 
   @Query(() => Invoice, { name: 'invoice' })
   findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.invoicesService.findOne(id);
+    return this.invoiceService.findOne(id);
   }
 
   @Mutation(() => Invoice)
   updateInvoice(
     @Args('updateInvoiceInput') updateInvoiceInput: UpdateInvoiceInput,
   ) {
-    return this.invoicesService.update(
+    return this.invoiceService.update(
       updateInvoiceInput.id,
       updateInvoiceInput,
     );
@@ -37,6 +37,6 @@ export class InvoiceResolver {
 
   @Mutation(() => Invoice)
   removeInvoice(@Args('id', { type: () => Int }) id: number) {
-    return this.invoicesService.remove(id);
+    return this.invoiceService.remove(id);
   }
 }

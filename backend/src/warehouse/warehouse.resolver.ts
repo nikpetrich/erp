@@ -6,30 +6,30 @@ import { WarehouseService } from './warehouse.service';
 
 @Resolver(() => Warehouse)
 export class WarehouseResolver {
-  constructor(private readonly warehousesService: WarehouseService) {}
+  constructor(private readonly warehouseService: WarehouseService) {}
 
   @Mutation(() => Warehouse)
   createWarehouse(
     @Args('createWarehouseInput') createWarehouseInput: CreateWarehouseInput,
   ) {
-    return this.warehousesService.create(createWarehouseInput);
+    return this.warehouseService.create(createWarehouseInput);
   }
 
   @Query(() => [Warehouse], { name: 'warehouses' })
   findAll() {
-    return this.warehousesService.findAll();
+    return this.warehouseService.findAll();
   }
 
   @Query(() => Warehouse, { name: 'warehouse' })
   findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.warehousesService.findOne(id);
+    return this.warehouseService.findOne(id);
   }
 
   @Mutation(() => Warehouse)
   updateWarehouse(
     @Args('updateWarehouseInput') updateWarehouseInput: UpdateWarehouseInput,
   ) {
-    return this.warehousesService.update(
+    return this.warehouseService.update(
       updateWarehouseInput.id,
       updateWarehouseInput,
     );
@@ -37,6 +37,6 @@ export class WarehouseResolver {
 
   @Mutation(() => Warehouse)
   removeWarehouse(@Args('id', { type: () => Int }) id: number) {
-    return this.warehousesService.remove(id);
+    return this.warehouseService.remove(id);
   }
 }
