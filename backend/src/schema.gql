@@ -25,10 +25,10 @@ scalar DateTime
 type Article {
   id: Int!
   number: String!
+  originalNumber: String!
   title: String!
   price: Float!
   amount: Int!
-  status: Int!
   manufacturer: String
   modified: DateTime!
   created: DateTime!
@@ -50,17 +50,24 @@ type User {
   id: Int!
   username: String!
   password: String!
-  role: Int!
+  role: UserRole!
   modified: DateTime!
   created: DateTime!
   invoices: [Invoice!]
+}
+
+"""The user role"""
+enum UserRole {
+  Admin
+  Employee
+  Consultant
 }
 
 type Invoice {
   id: Int!
   title: String!
   discount: Int
-  payedBy: Int!
+  paymentMethod: PaymentMethod!
   additionalInfo: String
   modified: DateTime!
   created: DateTime!
@@ -68,6 +75,13 @@ type Invoice {
   user: User
   customer: Customer
   articles: [Article!]!
+}
+
+"""The payment method"""
+enum PaymentMethod {
+  EC
+  Transfer
+  Cash
 }
 
 type Client {
@@ -182,20 +196,20 @@ input UpdateCustomerInput {
 
 input CreateArticleInput {
   number: String!
+  originalNumber: String!
   title: String!
   price: Float!
   amount: Int!
-  status: Int!
   manufacturer: String
   warehouseId: Int
 }
 
 input UpdateArticleInput {
   number: String
+  originalNumber: String
   title: String
   price: Float
   amount: Int
-  status: Int
   manufacturer: String
   warehouseId: Int
 }
@@ -203,7 +217,7 @@ input UpdateArticleInput {
 input CreateInvoiceInput {
   title: String!
   discount: Int
-  payedBy: Int!
+  paymentMethod: PaymentMethod!
   additionalInfo: String
   clientId: Int
   userId: Int
@@ -213,7 +227,7 @@ input CreateInvoiceInput {
 input UpdateInvoiceInput {
   title: String
   discount: Int
-  payedBy: Int
+  paymentMethod: PaymentMethod
   additionalInfo: String
   clientId: Int
   userId: Int
@@ -223,13 +237,13 @@ input UpdateInvoiceInput {
 input CreateUserInput {
   username: String!
   password: String!
-  role: Int!
+  role: UserRole!
 }
 
 input UpdateUserInput {
   username: String
   password: String
-  role: Int
+  role: UserRole
 }
 
 input CreateWarehouseInput {

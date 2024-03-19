@@ -30,7 +30,11 @@ export class InvoiceService {
 
   findAll(): Promise<Invoice[]> {
     try {
-      return this.invoiceRepository.find();
+      return this.invoiceRepository.find({
+        relations: {
+          articles: true,
+        },
+      });
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(error.message);
@@ -39,7 +43,12 @@ export class InvoiceService {
 
   findOne(id: number) {
     try {
-      return this.invoiceRepository.findOneBy({ id });
+      return this.invoiceRepository.find({
+        relations: {
+          articles: true,
+        },
+        where: { id },
+      });
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(error.message);
