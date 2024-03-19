@@ -14,7 +14,7 @@ type Warehouse {
   modified: DateTime!
   created: DateTime!
   articles: [Article!]
-  address: Address
+  address: Address!
 }
 
 """
@@ -32,7 +32,7 @@ type Article {
   manufacturer: String
   modified: DateTime!
   created: DateTime!
-  warehouse: Warehouse
+  warehouse: Warehouse!
 }
 
 type Customer {
@@ -43,7 +43,7 @@ type Customer {
   modified: DateTime!
   created: DateTime!
   invoices: [Invoice!]
-  address: Address
+  address: Address!
 }
 
 type User {
@@ -71,9 +71,9 @@ type Invoice {
   additionalInfo: String
   modified: DateTime!
   created: DateTime!
-  client: Client
-  user: User
-  customer: Customer
+  client: Client!
+  user: User!
+  customer: Customer!
   articles: [Article!]!
 }
 
@@ -91,7 +91,7 @@ type Client {
   mail: String
   modified: DateTime!
   created: DateTime!
-  address: Address
+  address: Address!
   invoices: [Invoice!]
 }
 

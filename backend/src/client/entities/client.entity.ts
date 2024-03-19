@@ -44,14 +44,14 @@ export class Client {
 
   @ManyToOne(() => Address, (address) => address.warehouses, {
     eager: true,
-    nullable: true,
+    nullable: false,
   })
   @JoinColumn({ name: 'address_id' })
-  @Field(() => Address, { nullable: true })
-  address?: Address;
+  @Field(() => Address, { nullable: false })
+  address: Address;
 
   @Column({ type: 'int', name: 'address_id', nullable: false })
-  addressId?: number;
+  addressId: number;
 
   @OneToMany(() => Invoice, (invoice) => invoice.customer, {
     nullable: true,

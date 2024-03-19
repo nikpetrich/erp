@@ -36,7 +36,7 @@ export class Invoice {
 
   @Column({ type: 'varchar', nullable: true })
   @Field(() => String, { nullable: true })
-  additionalInfo: string;
+  additionalInfo?: string;
 
   @UpdateDateColumn({ type: 'timestamp', nullable: false })
   @Field(() => Date, { nullable: false })
@@ -52,36 +52,36 @@ export class Invoice {
 
   @ManyToOne(() => Client, (client) => client.invoices, {
     eager: true,
-    nullable: true,
+    nullable: false,
   })
   @JoinColumn({ name: 'client_id' })
-  @Field(() => Client, { nullable: true })
-  client?: Client;
+  @Field(() => Client, { nullable: false })
+  client: Client;
 
   @Column({ type: 'int', name: 'client_id', nullable: false })
-  clientId?: number;
+  clientId: number;
 
   @ManyToOne(() => User, (user) => user.invoices, {
     eager: true,
-    nullable: true,
+    nullable: false,
   })
   @JoinColumn({ name: 'user_id' })
-  @Field(() => User, { nullable: true })
-  user?: User;
+  @Field(() => User, { nullable: false })
+  user: User;
 
   @Column({ type: 'int', name: 'user_id', nullable: false })
-  userId?: number;
+  userId: number;
 
   @ManyToOne(() => Customer, (customer) => customer.invoices, {
     eager: true,
-    nullable: true,
+    nullable: false,
   })
   @JoinColumn({ name: 'customer_id' })
-  @Field(() => Customer, { nullable: true })
-  customer?: Customer;
+  @Field(() => Customer, { nullable: false })
+  customer: Customer;
 
   @Column({ type: 'int', name: 'customer_id', nullable: false })
-  customerId?: number;
+  customerId: number;
 
   @ManyToMany(() => Article)
   @JoinTable()

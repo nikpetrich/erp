@@ -54,12 +54,12 @@ export class Article {
 
   @ManyToOne(() => Warehouse, (warehouse) => warehouse.articles, {
     eager: true,
-    nullable: true,
+    nullable: false,
   })
   @JoinColumn({ name: 'warehouse_id' })
-  @Field(() => Warehouse, { nullable: true })
-  warehouse?: Warehouse;
+  @Field(() => Warehouse, { nullable: false })
+  warehouse: Warehouse;
 
   @Column({ type: 'int', name: 'warehouse_id', nullable: false })
-  warehouseId?: number;
+  warehouseId: number;
 }

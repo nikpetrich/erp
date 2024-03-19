@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 @Entity()
 @ObjectType()
 export class Customer {
@@ -41,22 +42,18 @@ export class Customer {
   @Field(() => Date, { nullable: false })
   created: Date;
 
-  @OneToMany(() => Invoice, (invoice) => invoice.customer, {
-    nullable: true,
-  })
-  @Field(() => [Invoice], {
-    nullable: true,
-  })
+  @OneToMany(() => Invoice, (invoice) => invoice.customer, { nullable: true })
+  @Field(() => [Invoice], { nullable: true })
   invoices?: Invoice[];
 
   @ManyToOne(() => Address, (address) => address.warehouses, {
     eager: true,
-    nullable: true,
+    nullable: false,
   })
   @JoinColumn({ name: 'address_id' })
-  @Field(() => Address, { nullable: true })
-  address?: Address;
+  @Field(() => Address, { nullable: false })
+  address: Address;
 
   @Column({ type: 'int', name: 'address_id', nullable: false })
-  addressId?: number;
+  addressId: number;
 }
