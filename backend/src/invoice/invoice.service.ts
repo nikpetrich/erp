@@ -4,6 +4,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Article } from 'src/article/entities/article.entity';
 import { Repository } from 'typeorm';
 import { CreateInvoiceInput } from './dto/create-invoice.input';
 import { UpdateInvoiceInput } from './dto/update-invoice.input';
@@ -19,6 +20,12 @@ export class InvoiceService {
 
   async create(createInvoiceInput: CreateInvoiceInput) {
     const invoice = this.invoiceRepository.create(createInvoiceInput);
+
+    invoice.articles = createInvoiceInput.articleIds.map((id) => ({
+      ...new Article(),
+      id,
+    }));
+
     try {
       await this.invoiceRepository.save(invoice);
       return { succeeded: true };
@@ -30,11 +37,7 @@ export class InvoiceService {
 
   findAll(): Promise<Invoice[]> {
     try {
-      return this.invoiceRepository.find({
-        relations: {
-          articles: true,
-        },
-      });
+      return this.invoiceRepository.find();
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(error.message);

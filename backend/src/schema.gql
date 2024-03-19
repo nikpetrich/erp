@@ -222,7 +222,7 @@ input CreateInvoiceInput {
   clientId: Int!
   userId: Int!
   customerId: Int!
-  articleIds: [Int!]
+  articleIds: [Int!]!
 }
 
 input UpdateInvoiceInput {

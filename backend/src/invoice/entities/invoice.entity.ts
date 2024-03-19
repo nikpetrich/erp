@@ -83,8 +83,11 @@ export class Invoice {
   @Column({ type: 'int', name: 'customer_id', nullable: false })
   customerId: number;
 
-  @ManyToMany(() => Article)
+  @ManyToMany(() => Article, {
+    eager: true,
+    nullable: false,
+  })
   @JoinTable()
-  @Field(() => [Article]) //TODO: check if this is correct
+  @Field(() => [Article])
   articles: Article[];
 }

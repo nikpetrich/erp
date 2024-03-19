@@ -24,6 +24,6 @@ export class CreateInvoiceInput {
   @Field(() => Int, { nullable: false })
   customerId: number;
 
-  @Field(() => [Int], { nullable: true })
-  articleIds?: number[];
+  @Field(() => [Int], { nullable: false })
+  articleIds: number[];
 }
