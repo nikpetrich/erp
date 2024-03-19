@@ -170,7 +170,7 @@ input CreateClientInput {
   title: String!
   phone: String
   mail: String
-  addressId: Int
+  addressId: Int!
 }
 
 input UpdateClientInput {
@@ -184,7 +184,7 @@ input CreateCustomerInput {
   title: String!
   phone: String
   mail: String
-  addressId: Int
+  addressId: Int!
 }
 
 input UpdateCustomerInput {
@@ -201,7 +201,7 @@ input CreateArticleInput {
   price: Float!
   amount: Int!
   manufacturer: String
-  warehouseId: Int
+  warehouseId: Int!
 }
 
 input UpdateArticleInput {
@@ -219,9 +219,10 @@ input CreateInvoiceInput {
   discount: Int
   paymentMethod: PaymentMethod!
   additionalInfo: String
-  clientId: Int
-  userId: Int
-  customerId: Int
+  clientId: Int!
+  userId: Int!
+  customerId: Int!
+  articleIds: [Int!]
 }
 
 input UpdateInvoiceInput {
@@ -232,6 +233,7 @@ input UpdateInvoiceInput {
   clientId: Int
   userId: Int
   customerId: Int
+  articleIds: [Int!]
 }
 
 input CreateUserInput {
@@ -250,7 +252,7 @@ input CreateWarehouseInput {
   title: String!
   phone: String
   mail: String
-  addressId: Int
+  addressId: Int!
 }
 
 input UpdateWarehouseInput {

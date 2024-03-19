@@ -11,6 +11,6 @@ export class CreateClientInput {
   @Field(() => String, { nullable: true })
   mail?: string;
 
-  @Field(() => Int, { nullable: true })
-  addressId?: number;
+  @Field(() => Int, { nullable: false })
+  addressId: number;
 }

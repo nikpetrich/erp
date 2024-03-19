@@ -11,6 +11,6 @@ export class CreateWarehouseInput {
   @Field(() => String, { nullable: true })
   mail?: string;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int, { nullable: false })
   addressId: number;
 }

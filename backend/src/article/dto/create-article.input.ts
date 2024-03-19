@@ -20,6 +20,6 @@ export class CreateArticleInput {
   @Field(() => String, { nullable: true })
   manufacturer?: string;
 
-  @Field(() => Int, { nullable: true })
-  warehouseId?: number;
+  @Field(() => Int, { nullable: false })
+  warehouseId: number;
 }

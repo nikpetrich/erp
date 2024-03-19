@@ -13,14 +13,17 @@ export class CreateInvoiceInput {
   paymentMethod: PaymentMethod;
 
   @Field(() => String, { nullable: true })
-  additionalInfo: string;
+  additionalInfo?: string;
 
-  @Field(() => Int, { nullable: true })
-  clientId?: number;
+  @Field(() => Int, { nullable: false })
+  clientId: number;
 
-  @Field(() => Int, { nullable: true })
-  userId?: number;
+  @Field(() => Int, { nullable: false })
+  userId: number;
 
-  @Field(() => Int, { nullable: true })
-  customerId?: number;
+  @Field(() => Int, { nullable: false })
+  customerId: number;
+
+  @Field(() => [Int], { nullable: true })
+  articleIds?: number[];
 }
