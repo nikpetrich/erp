@@ -110,7 +110,7 @@ type Address {
 }
 
 type Query {
-  addresses: [Address!]!
+  addresses(skip: Int! = 0, take: Int! = 25): [Address!]!
   address(id: Int!): Address!
   clients: [Client!]!
   client(id: Int!): Client!

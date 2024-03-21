@@ -1,5 +1,6 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { MutationRequestOutput } from 'src/common/dto/mutation-request.output';
+import { QueryRecordsInput } from 'src/common/dto/query-records.input';
 import { AddressService } from './address.service';
 import { CreateAddressInput } from './dto/create-address.input';
 import { UpdateAddressInput } from './dto/update-address.input';
@@ -17,8 +18,8 @@ export class AddressResolver {
   }
 
   @Query(() => [Address], { name: 'addresses' })
-  findAll() {
-    return this.addressService.findAll();
+  findAll(@Args() args: QueryRecordsInput) {
+    return this.addressService.findAll(args);
   }
 
   @Query(() => Address, { name: 'address' })

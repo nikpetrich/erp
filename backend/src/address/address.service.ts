@@ -4,6 +4,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { QueryRecordsInput } from 'src/common/dto/query-records.input';
 import { Repository } from 'typeorm';
 import { CreateAddressInput } from './dto/create-address.input';
 import { UpdateAddressInput } from './dto/update-address.input';
@@ -28,9 +29,9 @@ export class AddressService {
     }
   }
 
-  findAll(): Promise<Address[]> {
+  findAll(args: QueryRecordsInput): Promise<Address[]> {
     try {
-      return this.addressRepository.find();
+      return this.addressRepository.find({ skip: args.skip, take: args.take });
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(error.message);
