@@ -4,7 +4,6 @@ import { Article } from 'src/article/entities/article.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -50,10 +49,6 @@ export class Warehouse {
     eager: true,
     nullable: false,
   })
-  @JoinColumn({ name: 'address_id' })
   @Field(() => Address, { nullable: false })
   address: Address;
-
-  @Column({ type: 'int', name: 'address_id', nullable: false })
-  addressId: number;
 }

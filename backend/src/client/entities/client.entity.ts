@@ -4,7 +4,6 @@ import { Invoice } from 'src/invoice/entities/invoice.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -46,12 +45,8 @@ export class Client {
     eager: true,
     nullable: false,
   })
-  @JoinColumn({ name: 'address_id' })
   @Field(() => Address, { nullable: false })
   address: Address;
-
-  @Column({ type: 'int', name: 'address_id', nullable: false })
-  addressId: number;
 
   @OneToMany(() => Invoice, (invoice) => invoice.customer, {
     nullable: true,

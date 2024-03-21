@@ -170,28 +170,32 @@ input CreateClientInput {
   title: String!
   phone: String
   mail: String
-  addressId: Int!
+  address: MutationRelationshipInput!
+}
+
+input MutationRelationshipInput {
+  id: Int!
 }
 
 input UpdateClientInput {
   title: String
   phone: String
   mail: String
-  addressId: Int
+  address: MutationRelationshipInput
 }
 
 input CreateCustomerInput {
   title: String!
   phone: String
   mail: String
-  addressId: Int!
+  address: MutationRelationshipInput!
 }
 
 input UpdateCustomerInput {
   title: String
   phone: String
   mail: String
-  addressId: Int
+  address: MutationRelationshipInput
 }
 
 input CreateArticleInput {
@@ -201,7 +205,7 @@ input CreateArticleInput {
   price: Float!
   amount: Int!
   manufacturer: String
-  warehouseId: Int!
+  warehouse: MutationRelationshipInput!
 }
 
 input UpdateArticleInput {
@@ -211,7 +215,7 @@ input UpdateArticleInput {
   price: Float
   amount: Int
   manufacturer: String
-  warehouseId: Int
+  warehouse: MutationRelationshipInput
 }
 
 input CreateInvoiceInput {
@@ -219,9 +223,9 @@ input CreateInvoiceInput {
   discount: Int
   paymentMethod: PaymentMethod!
   additionalInfo: String
-  clientId: Int!
-  userId: Int!
-  customerId: Int!
+  client: MutationRelationshipInput!
+  user: MutationRelationshipInput!
+  customer: MutationRelationshipInput!
   articleIds: [Int!]!
 }
 
@@ -230,9 +234,9 @@ input UpdateInvoiceInput {
   discount: Int
   paymentMethod: PaymentMethod
   additionalInfo: String
-  clientId: Int
-  userId: Int
-  customerId: Int
+  client: MutationRelationshipInput
+  user: MutationRelationshipInput
+  customer: MutationRelationshipInput
   articleIds: [Int!]
 }
 
@@ -252,12 +256,12 @@ input CreateWarehouseInput {
   title: String!
   phone: String
   mail: String
-  addressId: Int!
+  address: MutationRelationshipInput!
 }
 
 input UpdateWarehouseInput {
   title: String
   phone: String
   mail: String
-  addressId: Int
+  address: MutationRelationshipInput
 }

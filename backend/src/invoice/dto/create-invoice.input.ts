@@ -1,4 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
+import { MutationRelationshipInput } from 'src/common/dto/mutation-relationship.input';
 import { PaymentMethod } from '../entities/payment-method.enum';
 
 @InputType()
@@ -15,14 +16,14 @@ export class CreateInvoiceInput {
   @Field(() => String, { nullable: true })
   additionalInfo?: string;
 
-  @Field(() => Int, { nullable: false })
-  clientId: number;
+  @Field(() => MutationRelationshipInput, { nullable: false })
+  client: MutationRelationshipInput;
 
-  @Field(() => Int, { nullable: false })
-  userId: number;
+  @Field(() => MutationRelationshipInput, { nullable: false })
+  user: MutationRelationshipInput;
 
-  @Field(() => Int, { nullable: false })
-  customerId: number;
+  @Field(() => MutationRelationshipInput, { nullable: false })
+  customer: MutationRelationshipInput;
 
   @Field(() => [Int], { nullable: false })
   articleIds: number[];

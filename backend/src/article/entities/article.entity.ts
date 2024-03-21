@@ -3,7 +3,6 @@ import { Warehouse } from 'src/warehouse/entities/warehouse.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -56,10 +55,6 @@ export class Article {
     eager: true,
     nullable: false,
   })
-  @JoinColumn({ name: 'warehouse_id' })
   @Field(() => Warehouse, { nullable: false })
   warehouse: Warehouse;
-
-  @Column({ type: 'int', name: 'warehouse_id', nullable: false })
-  warehouseId: number;
 }

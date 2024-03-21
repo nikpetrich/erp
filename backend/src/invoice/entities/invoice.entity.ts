@@ -6,7 +6,6 @@ import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -54,34 +53,22 @@ export class Invoice {
     eager: true,
     nullable: false,
   })
-  @JoinColumn({ name: 'client_id' })
   @Field(() => Client, { nullable: false })
   client: Client;
-
-  @Column({ type: 'int', name: 'client_id', nullable: false })
-  clientId: number;
 
   @ManyToOne(() => User, (user) => user.invoices, {
     eager: true,
     nullable: false,
   })
-  @JoinColumn({ name: 'user_id' })
   @Field(() => User, { nullable: false })
   user: User;
-
-  @Column({ type: 'int', name: 'user_id', nullable: false })
-  userId: number;
 
   @ManyToOne(() => Customer, (customer) => customer.invoices, {
     eager: true,
     nullable: false,
   })
-  @JoinColumn({ name: 'customer_id' })
   @Field(() => Customer, { nullable: false })
   customer: Customer;
-
-  @Column({ type: 'int', name: 'customer_id', nullable: false })
-  customerId: number;
 
   @ManyToMany(() => Article, {
     eager: true,

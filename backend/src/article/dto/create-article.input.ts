@@ -1,4 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
+import { MutationRelationshipInput } from 'src/common/dto/mutation-relationship.input';
 
 @InputType()
 export class CreateArticleInput {
@@ -20,6 +21,6 @@ export class CreateArticleInput {
   @Field(() => String, { nullable: true })
   manufacturer?: string;
 
-  @Field(() => Int, { nullable: false })
-  warehouseId: number;
+  @Field(() => MutationRelationshipInput, { nullable: false })
+  warehouse: MutationRelationshipInput;
 }

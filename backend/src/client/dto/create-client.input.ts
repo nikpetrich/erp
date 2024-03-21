@@ -1,4 +1,5 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
+import { MutationRelationshipInput } from 'src/common/dto/mutation-relationship.input';
 
 @InputType()
 export class CreateClientInput {
@@ -11,6 +12,6 @@ export class CreateClientInput {
   @Field(() => String, { nullable: true })
   mail?: string;
 
-  @Field(() => Int, { nullable: false })
-  addressId: number;
+  @Field(() => MutationRelationshipInput, { nullable: false })
+  address: MutationRelationshipInput;
 }
